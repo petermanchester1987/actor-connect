@@ -18,6 +18,7 @@
     <title>Welcome To Actor Connector</title>
   </head>
   <body>
+      <!--Nav-->
     <nav class="navbar bg-dark">
       <h1>
         <a href="dashboard.html">
@@ -33,18 +34,23 @@
     </nav>
 
     <section class="container">
-      <h1 class="large text-primary">Sign Up</h1>
-      <p class="lead"><i class="fas fa-user"></i>Create your account</p>
-      <form action="dashboard.html" class="form">
-        <div class="form-group">
-          <input type="text" placeholder="Name" required />
+
+        <!--Alert-->
+        <div class="alert alert-danger">
+            Invalid Credentials
         </div>
-        <div class="form-group">
+
+
+
+        <!--Body-->
+      <h1 class="large text-primary">Sign In</h1>
+      <p class="lead"><i class="fas fa-user"></i>Sign in to your account</p>
+
+        <!--Form-->
+      <form action="dashboard.html" class="form">
+       
           <input type="email" placeholder="Email Address" required />
-          <small class="form-text"
-            >This site uses Gravatar, so if you want a profile image, use a
-            Gravatar email.</small
-          >
+          
         </div>
         <div class="form-group">
           <input
@@ -54,18 +60,11 @@
             minlength="6"
           />
         </div>
-        <div class="form-group">
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            required
-            minlength="6"
-          />
-        </div>
-        <input type="submit" value="Register" class="btn btn-primary" />
+        
+        <input type="submit" value="Login" class="btn btn-primary" />
       </form>
       <p class="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Don't have an account? <a href="register.html">Sign Up</a>
       </p>
     </section>
   </body>
