@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator/check");
+const gravatar = require("gravatar");
+const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
 
 //bring in model schema
 const User = require("../../models/User");
@@ -32,16 +34,39 @@ router.post(
       let user = await User.findOne({ email });
 
       if (user) {
-        res.status(400).json({ errors: [{ msg: "User already exists" }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "User already exists" }] });
       }
 
       // get users gravatar
+      const avatar = gravatar.url(email, {
+        s: "200",
+        r: "pg",
+        d: "mm",
+      });
 
-      //encrypt password
+      //making a new user instance - have to save it later
+      user = new User({
+        name,
+        email,
+        avatar,
+        password,
+      });
+
+      // NOW TO encrypt password
+      // you have to create a variable called salt to do the hashing with
+      const salt = await bcrypt.genSalt(10);
+
+      //then you pass in the object to the hash function with the plain text password and the salt
+      user.password = await bcrypt.hash(password, salt);
+
+      //this returns a promise saving the user instance
+      await user.save();
 
       //return jsonwebtoken
 
-      res.send("user route");
+      res.send("user registered");
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
