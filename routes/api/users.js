@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 //bring in model schema
@@ -61,12 +63,31 @@ router.post(
       //then you pass in the object to the hash function with the plain text password and the salt
       user.password = await bcrypt.hash(password, salt);
 
-      //this returns a promise saving the user instance
+      //this returns a promise saving the user instance that you can use
+      //like on the line beneath
       await user.save();
 
       //return jsonwebtoken
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+      //call the jwt function with the payload with the id from the promise
+      //the secret hidden in the config folder
+      //and options for when it expires
+      //
+      //NEED TO MAKE IT expiresIn: 3600  OTHERWISE ITLL LAST FAR TOO LONG!
 
-      res.send("user registered");
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 3600000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
