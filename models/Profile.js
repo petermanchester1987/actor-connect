@@ -44,7 +44,6 @@ const ProfileSchema = new mongoose.Schema({
       },
       director: {
         type: String,
-        required: true,
       },
       location: {
         type: String,
