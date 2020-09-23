@@ -29,11 +29,14 @@ router.get("/me", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
+//
+//
+//
+//
 // @route   POST api/profile/
 // @desc    Create or update a user profile
 // @access  Private
-
+//
 router.post(
   "/",
   [
@@ -80,9 +83,51 @@ router.post(
       profileFields.skills = skills.split(",").map((skill) => skill.trim());
     }
 
-    console.log(profileFields.skills);
-    res.send("hello");
+    //build social object
+
+    profileFields.social = {};
+    if (youtube) profileFields.social.youtube = youtube;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+    if (instagram) profileFields.social.instagram = instagram;
+
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        //update if there is one
+
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+
+        return res.json(profile);
+      }
+
+      //create if not found!
+
+      profile = new Profile(profileFields);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
   }
 );
+
+//
+//
+//
+//
+// @route   POST api/profile/
+// @desc    Create or update a user profile
+// @access  Private
+//
 
 module.exports = router;
