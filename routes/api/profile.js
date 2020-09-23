@@ -30,7 +30,7 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
-// @route   POST api/profile/me
+// @route   POST api/profile/
 // @desc    Create or update a user profile
 // @access  Private
 
@@ -48,6 +48,40 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    //destructure from req.body
+    const {
+      company,
+      location,
+      website,
+      bio,
+      skills,
+      status,
+      spotlightpin,
+      youtube,
+      twitter,
+      instagram,
+      linkedin,
+      facebook,
+    } = req.body;
+
+    //build profile object
+    const profileFields = {};
+    profileFields.user = req.user.id;
+    if (company) profileFields.company = company;
+    if (website) profileFields.website = website;
+    if (location) profileFields.location = location;
+    if (bio) profileFields.bio = bio;
+    if (status) profileFields.status = status;
+    if (spotlightpin) profileFields.spotlightpin = spotlightpin;
+    if (skills) {
+      //splits the comma seperated list from a string to an array
+      //then map through the items and trim them off
+
+      profileFields.skills = skills.split(",").map((skill) => skill.trim());
+    }
+
+    console.log(profileFields.skills);
+    res.send("hello");
   }
 );
 
