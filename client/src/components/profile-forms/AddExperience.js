@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { addExperience } from "../../actions/profile";
 
-const AddExperience = (props) => {
+const AddExperience = ({ addExperience, history }) => {
   const [formData, setFormData] = useState({
     title: "",
     role: "",
@@ -35,6 +35,10 @@ const AddExperience = (props) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addExperience(formData, history);
+  };
   return (
     <Fragment>
       <h1 className="large text-primary">Add An Experience</h1>
@@ -43,7 +47,7 @@ const AddExperience = (props) => {
         that you have had in the past
       </p>
       <small>* = required field</small>
-      <form className="form">
+      <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <input
             type="text"
@@ -109,6 +113,7 @@ const AddExperience = (props) => {
             name="to"
             value={to}
             onChange={(e) => onChange(e)}
+            disabled={toDateDisabled ? "disabled" : ""}
           />
         </div>
         <div className="form-group">
@@ -120,7 +125,7 @@ const AddExperience = (props) => {
               value={current}
               onChange={(e) => {
                 setFormData({ ...formData, current: !current });
-                toggleDisabled(!toDataDisabled);
+                toggleDisabled(!toDateDisabled);
               }}
             />{" "}
             Current Job
