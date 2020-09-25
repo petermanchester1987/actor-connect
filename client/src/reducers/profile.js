@@ -2,6 +2,7 @@ import {
   GET_PROFILE,
   PROFILE_ERROR,
   CLEAR_PROFILE,
+  UPDATE_PROFILE,
 } from "../actions/constants";
 
 const initialState = {
@@ -17,11 +18,13 @@ export default function (state = initialState, action) {
 
   switch (type) {
     case GET_PROFILE:
+    case UPDATE_PROFILE:
       return {
         ...state,
         profile: payload,
         loading: false,
       };
+
     case PROFILE_ERROR:
       return {
         ...state,
@@ -35,6 +38,7 @@ export default function (state = initialState, action) {
         repos: [],
         loading: false,
       };
+
     default:
       return state;
   }
