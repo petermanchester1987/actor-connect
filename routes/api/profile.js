@@ -106,12 +106,14 @@ router.post(
           { new: true }
         );
 
+        await profile.save();
+
         return res.json(profile);
       }
 
       //create if not found!
 
-      profile = new Profile(profileFields);
+      profile = await new Profile(profileFields);
 
       await profile.save();
 
