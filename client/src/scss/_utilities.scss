@@ -95,6 +95,14 @@
     }
   }
 
+  &.btn-light {
+    @include set-background($light-color);
+
+    &:hover {
+      background: darken($light-color, 10%);
+    }
+  }
+
   &.btn-dark {
     @include set-background($dark-color);
 

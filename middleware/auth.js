@@ -14,11 +14,20 @@ module.exports = function (req, res, next) {
 
   try {
     //decodes the token using the headers token and the secret in the config
-    const decoded = jwt.verify(token, config.get("jwtSecret"));
-    //set req.user with the decoded user in the token
-    req.user = decoded.user;
-    //call next like any middleware
-    next();
+    // const decoded = jwt.verify(token, config.get("jwtSecret"));
+    // //set req.user with the decoded user in the token
+    // req.user = decoded.user;
+    // //call next like any middleware
+    // next();
+
+    jwt.verify(token, config.get("jwtSecret"), (error, decoded) => {
+      if (error) {
+        return res.status(401).json({ msg: "Token is not valid" });
+      } else {
+        req.user = decoded.user;
+        next();
+      }
+    });
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
   }

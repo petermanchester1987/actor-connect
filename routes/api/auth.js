@@ -74,12 +74,12 @@ router.post(
       //the secret hidden in the config folder
       //and options for when it expires
       //
-      //NEED TO MAKE IT expiresIn: 3600  OTHERWISE ITLL LAST FAR TOO LONG!
+      //have already made it expiresIn: 3600
 
       jwt.sign(
         payload,
         config.get("jwtSecret"),
-        { expiresIn: 3600000 },
+        { expiresIn: "5 days" },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
+
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 const Post = require("../../models/Post");
+
 const auth = require("../../middleware/auth");
+const checkObjectId = require("../../middleware/checkObjectId");
+
 const { check, validationResult } = require("express-validator");
 
 // @route   POST api/posts
@@ -66,7 +70,7 @@ router.get("/", auth, async (req, res) => {
 // @desc    Get a post by id
 // @access  Private
 //
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -76,9 +80,7 @@ router.get("/:id", auth, async (req, res) => {
     res.json(post);
   } catch (err) {
     console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Post not found" });
-    }
+
     res.status(500).send("Server Error");
   }
 });
@@ -91,7 +93,7 @@ router.get("/:id", auth, async (req, res) => {
 // @desc    Delete a post by id
 // @access  Private
 //
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -110,9 +112,7 @@ router.delete("/:id", auth, async (req, res) => {
     res.json({ msg: "Post removed " });
   } catch (err) {
     console.error(err.message);
-    if (err.kind === "ObjectId") {
-      return res.status(404).json({ msg: "Post not found" });
-    }
+
     res.status(500).send("Server Error");
   }
 });
@@ -125,14 +125,11 @@ router.delete("/:id", auth, async (req, res) => {
 // @desc    like a post by id
 // @access  Private
 //
-router.put("/like/:id", auth, async (req, res) => {
+router.put("/like/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     //check if post has already been liked by this user
-    if (
-      post.likes.filter((like) => like.user.toString() === req.user.id).length >
-      0
-    ) {
+    if (post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: "Post already liked" });
     }
 
@@ -155,14 +152,11 @@ router.put("/like/:id", auth, async (req, res) => {
 // @desc    unlike a post a user has previously liked
 // @access  Private
 //
-router.put("/unlike/:id", auth, async (req, res) => {
+router.put("/unlike/:id", [auth, checkObjectId("id")], async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     //check if post has already been liked by this user
-    if (
-      post.likes.filter((like) => like.user.toString() === req.user.id)
-        .length === 0
-    ) {
+    if (post.likes.some((like) => like.user.toString() === req.user.id)) {
       return res.status(400).json({ msg: "Post has not yet been liked" });
     }
 
@@ -170,12 +164,17 @@ router.put("/unlike/:id", auth, async (req, res) => {
     // by mapping through the likes array
     // and making it into a string
     // then getting the index of that like object in the array
-    const removeIndex = post.likes
-      .map((like) => like.user.toString())
-      .indexOf(req.user.id);
+    // const removeIndex = post.likes
+    //   .map((like) => like.user.toString())
+    //   .indexOf(req.user.id);
 
-    //and removing it from the array
-    post.likes.splice(removeIndex, 1);
+    // //and removing it from the array
+    // post.likes.splice(removeIndex, 1);
+
+    // BETTER WAY TO remove the like
+    post.likes = post.likes.filter(
+      ({ user }) => user.toString() !== req.user.id
+    );
 
     await post.save();
 
@@ -196,7 +195,11 @@ router.put("/unlike/:id", auth, async (req, res) => {
 // @access  Private
 router.post(
   "/comment/:id",
-  [auth, [check("text", "Text is required").not().isEmpty()]],
+  [
+    auth,
+    checkObjectId("id"),
+    [check("text", "Text is required").not().isEmpty()],
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -263,12 +266,17 @@ router.delete("/comment/:id/:comment_id", auth, async (req, res) => {
     // by mapping through the likes array
     // and making it into a string
     // then getting the index of that like object in the array
-    const removeIndex = post.comments
-      .map((comment) => comment.user.toString())
-      .indexOf(req.user.id);
+    // const removeIndex = post.comments
+    //   .map((comment) => comment.user.toString())
+    //   .indexOf(req.user.id);
 
-    //and removing it from the array
-    post.comments.splice(removeIndex, 1);
+    // //and removing it from the array
+    // post.comments.splice(removeIndex, 1);
+
+    // Better way of removing post comment
+    post.comments = post.comments.filter(
+      ({ id }) => id !== req.params.comment_id
+    );
 
     await post.save();
 
