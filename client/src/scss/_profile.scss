@@ -53,26 +53,26 @@
 
   .profile-exp,
   .profile-edu {
-    & > div {
+    div {
       margin-bottom: 1rem;
       padding-bottom: 1rem;
       border-bottom: #ccc 1px dotted;
-    }
 
-    & :last-child {
-      border-bottom: none;
+      &:last-child {
+        border-bottom: none;
+      }
     }
 
     p {
       margin: 0.5rem 0;
 
-      // &.text-dark {
-      //   color: $dark-color;
-      // }
+      .text-dark {
+        color: $dark-color;
+      }
 
-      // > strong {
-      //   font-weight: bold;
-      // }
+      strong {
+        font-weight: bold;
+      }
     }
   }
 
