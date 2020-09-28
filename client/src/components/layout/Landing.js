@@ -12,6 +12,7 @@ const Landing = ({ isAuthenticated }) => {
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
+          <i className="fas fa-theater-masks x-large"></i>
           <h1 className="x-large">Actor Connector</h1>
           <p className="lead">
             Create Actor Profile/Bio, Share Posts and Get Help From Other Actors
