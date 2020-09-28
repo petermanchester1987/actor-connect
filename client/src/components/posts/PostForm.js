@@ -11,7 +11,6 @@ const PostForm = ({ addPost }) => {
         <h3>Say something...</h3>
       </div>
       <form
-        action=""
         class="form my-1"
         onSubmit={(e) => {
           e.preventDefault();
