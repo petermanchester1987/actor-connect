@@ -5,13 +5,13 @@ import { addComment } from "../../actions/post";
 
 const CommentForm = ({ postId, addComment }) => {
   const [text, setText] = useState("");
+
   return (
     <div class="post-form">
       <div class="post-form-header bg-primary">
         <h3>Leave a Comment...</h3>
       </div>
       <form
-        action=""
         class="form my-1"
         onSubmit={(e) => {
           e.preventDefault();
@@ -23,7 +23,7 @@ const CommentForm = ({ postId, addComment }) => {
           name="text"
           cols="30"
           rows="5"
-          placeholder="Create a post"
+          placeholder="Comment on a post"
           value={text}
           onChange={(e) => setText(e.target.value)}
           required
