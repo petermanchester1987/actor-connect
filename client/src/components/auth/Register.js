@@ -25,10 +25,10 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   //onSubmit function
   //stop default form action
   //will change the error handling later
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      setAlert("Passwords do not match", "danger", 5000);
+      setAlert("Passwords do not match", "danger");
     } else {
       //call register that we have destructure and brought in
       register({ name, email, password });
@@ -45,14 +45,14 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       <p className="lead">
         <i className="fas fa-user"></i>Create your account
       </p>
-      <form className="form" onSubmit={(e) => onSubmit(e)}>
+      <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <input
             type="text"
             placeholder="Name"
             name="name"
             value={name}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
@@ -61,7 +61,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             placeholder="Email Address"
             name="email"
             value={email}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
           <small className="form-text">
             This site uses Gravatar, so if you want a profile image, use a
@@ -74,7 +74,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             placeholder="Password"
             name="password"
             value={password}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
@@ -83,7 +83,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             placeholder="Confirm Password"
             name="password2"
             value={password2}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <input
