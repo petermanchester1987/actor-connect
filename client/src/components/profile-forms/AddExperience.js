@@ -54,7 +54,7 @@ const AddExperience = ({ addExperience, history }) => {
             placeholder="* Production Title"
             name="title"
             value={title}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             required
           />
         </div>
@@ -64,7 +64,7 @@ const AddExperience = ({ addExperience, history }) => {
             placeholder="* Role"
             name="role"
             value={role}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             required
           />
         </div>
@@ -74,7 +74,7 @@ const AddExperience = ({ addExperience, history }) => {
             placeholder="* Company"
             name="company"
             value={company}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             required
           />
         </div>
@@ -84,7 +84,7 @@ const AddExperience = ({ addExperience, history }) => {
             placeholder="* Director"
             name="director"
             value={director}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             required
           />
         </div>
@@ -94,17 +94,12 @@ const AddExperience = ({ addExperience, history }) => {
             placeholder="Location"
             name="location"
             value={location}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
         </div>
         <div className="form-group">
           <h4>From Date</h4>
-          <input
-            type="date"
-            name="from"
-            value={from}
-            onChange={(e) => onChange(e)}
-          />
+          <input type="date" name="from" value={from} onChange={onChange} />
         </div>
         <div className="form-group">
           <h4>To Date</h4>
@@ -112,7 +107,7 @@ const AddExperience = ({ addExperience, history }) => {
             type="date"
             name="to"
             value={to}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
             disabled={toDateDisabled ? "disabled" : ""}
           />
         </div>

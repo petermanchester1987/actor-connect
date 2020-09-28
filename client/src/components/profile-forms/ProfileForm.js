@@ -102,7 +102,7 @@ const ProfileForm = ({
             placeholder="Last Job"
             name="company"
             value={company}
-            onChange={(e) => onChange(e)}
+            onChange={onChange}
           />
           <small className="form-text">What was your last credit?</small>
         </div>
