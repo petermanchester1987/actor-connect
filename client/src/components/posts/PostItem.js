@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
@@ -14,7 +14,7 @@ const PostItem = ({
 }) => (
   <div className="post bg-white my-1 p-1">
     <div>
-      <Link to="/profile">
+      <Link to={`/profile/${user}`}>
         <img className="round-img" src={avatar} alt={name} />
         <h4>{name}</h4>
       </Link>
