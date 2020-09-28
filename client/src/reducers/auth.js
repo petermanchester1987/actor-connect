@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
         user: payload,
       };
 
-    //if success then set the users token in the local storage
+    //if success
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
       return {
