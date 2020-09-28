@@ -74,7 +74,7 @@ router.post(
       //the secret hidden in the config folder
       //and options for when it expires
       //
-      //have already made it expiresIn: 3600
+      //have already made it expiresIn: 5 days
 
       jwt.sign(
         payload,

@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+const path = require("path");
 
 //initialize express
 const app = express();
@@ -8,11 +9,7 @@ const app = express();
 connectDB();
 
 //init middleware USED TO BE bodyParser.json but not anymore
-app.use(express.json({ extended: false }));
-
-app.get("/", (req, res) => {
-  res.send("API running");
-});
+app.use(express.json());
 
 //define routes
 
